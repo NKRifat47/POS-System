@@ -1,0 +1,236 @@
+import { useState, useEffect } from "react";
+import {
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "../services/api";
+import "./Products.css";
+
+function Products({ user }) {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    stock: "",
+    barcode: "",
+  });
+
+  useEffect(() => {
+    loadProducts();
+  }, [search]);
+
+  const loadProducts = async () => {
+    try {
+      const data = await getProducts(search);
+      setProducts(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      if (editingProduct) {
+        await updateProduct(editingProduct.id, formData);
+      } else {
+        await createProduct(formData);
+      }
+      setShowModal(false);
+      setEditingProduct(null);
+      setFormData({ name: "", price: "", stock: "", barcode: "" });
+      loadProducts();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleEdit = (product) => {
+    setEditingProduct(product);
+    setFormData({
+      name: product.name,
+      price: product.price.toString(),
+      stock: product.stock.toString(),
+      barcode: product.barcode || "",
+    });
+    setShowModal(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?"))
+      return;
+
+    try {
+      await deleteProduct(id);
+      loadProducts();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const openAddModal = () => {
+    setEditingProduct(null);
+    setFormData({ name: "", price: "", stock: "", barcode: "" });
+    setShowModal(true);
+  };
+
+  if (loading) return <div className="loading">Loading...</div>;
+
+  return (
+    <div className="products-page">
+      <div className="products-header">
+        <h1>Product Management</h1>
+        <button className="btn-primary" onClick={openAddModal}>
+          + Add Product
+        </button>
+      </div>
+
+      {error && <div className="error-message">{error}</div>}
+
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search products by name or barcode..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      <div className="products-table">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Barcode</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="no-data">
+                  No products found
+                </td>
+              </tr>
+            ) : (
+              products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.id}</td>
+                  <td>{product.name}</td>
+                  <td>${product.price.toFixed(2)}</td>
+                  <td
+                    className={
+                      product.stock === 0
+                        ? "out-of-stock"
+                        : product.stock <= 10
+                          ? "low-stock"
+                          : ""
+                    }
+                  >
+                    {product.stock}
+                  </td>
+                  <td>{product.barcode || "-"}</td>
+                  <td>
+                    <button
+                      className="btn-edit"
+                      onClick={() => handleEdit(product)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn-delete"
+                      onClick={() => handleDelete(product.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>{editingProduct ? "Edit Product" : "Add Product"}</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Name *</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Price *</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={formData.price}
+                  onChange={(e) =>
+                    setFormData({ ...formData, price: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Stock *</label>
+                <input
+                  type="number"
+                  value={formData.stock}
+                  onChange={(e) =>
+                    setFormData({ ...formData, stock: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Barcode (optional)</label>
+                <input
+                  type="text"
+                  value={formData.barcode}
+                  onChange={(e) =>
+                    setFormData({ ...formData, barcode: e.target.value })
+                  }
+                />
+              </div>
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  className="btn-cancel"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary">
+                  {editingProduct ? "Update" : "Add"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Products;
