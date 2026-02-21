@@ -158,32 +158,40 @@ function POS({ user }) {
   return (
     <div className="pos-page">
       <div className="pos-left">
-        <div className="pos-header">
-          <h1>POS Billing</h1>
-          <div className="today-stats">
-            <span>Today's: {todayStats.sales} sales</span>
-            <span>${todayStats.revenue.toFixed(2)}</span>
+        <div className="pos-top-bar">
+          <div className="pos-title-area">
+            <h1>POS Billing</h1>
+            <div className="today-stats">
+              <span className="stats-label">Today's:</span>
+              <span className="stats-value">{todayStats.sales} sales</span>
+              <span className="stats-divider">|</span>
+              <span className="stats-revenue">${todayStats.revenue.toFixed(2)}</span>
+            </div>
           </div>
         </div>
 
-        <form className="barcode-form" onSubmit={handleBarcodeSubmit}>
-          <input
-            type="text"
-            placeholder="Scan or enter barcode..."
-            value={barcode}
-            onChange={(e) => setBarcode(e.target.value)}
-            ref={searchInputRef}
-          />
-          <button type="submit">Add</button>
-        </form>
+        <div className="pos-controls">
+          <form className="barcode-form" onSubmit={handleBarcodeSubmit}>
+            <div className="input-with-icon">
+              <input
+                type="text"
+                placeholder="Scan or enter barcode..."
+                value={barcode}
+                onChange={(e) => setBarcode(e.target.value)}
+                ref={searchInputRef}
+              />
+            </div>
+            <button type="submit" className="add-btn">Add</button>
+          </form>
 
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
         </div>
 
         {error && <div className="error-message">{error}</div>}
