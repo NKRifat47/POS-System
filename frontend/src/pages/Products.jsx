@@ -90,7 +90,7 @@ function Products({ user }) {
     <div className="products-page">
       <div className="products-header">
         <h1>Product Management</h1>
-        <button className="btn-primary" onClick={openAddModal}>
+        <button className="add-product-btn" onClick={openAddModal}>
           + Add Product
         </button>
       </div>

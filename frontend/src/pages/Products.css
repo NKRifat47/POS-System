@@ -1,187 +1,264 @@
 .products-page {
-  padding: 2rem;
+  padding: 2.5rem;
+  background: #f8fafc;
+  min-height: calc(100vh - 4rem);
 }
 
 .products-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .products-header h1 {
-  color: #333;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #1e293b;
   margin: 0;
 }
 
-.search-bar {
-  margin-bottom: 1.5rem;
+.add-product-btn {
+  padding: 0.85rem 1.5rem;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
 }
 
-.search-bar input {
+.add-product-btn:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+}
+
+/* Search bar */
+.products-page .search-bar {
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+.products-page .search-bar input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 1rem 1.5rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
   font-size: 1rem;
+  transition: all 0.2s;
   box-sizing: border-box;
 }
 
+.products-page .search-bar input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* Table Section */
 .products-table {
   background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  border: 1px solid #e2e8f0;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-th {
-  background: #f8f9fa;
-  font-weight: 600;
-  color: #555;
-}
-
-td.low-stock {
-  color: #ffc107;
-  font-weight: 500;
-}
-
-td.out-of-stock {
-  color: #dc3545;
-  font-weight: 500;
-}
-
-.no-data {
-  text-align: center;
-  color: #999;
-  padding: 2rem !important;
-}
-
-.btn-edit {
-  background: #ffc107;
-  color: #333;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 0.5rem;
-}
-
-.btn-delete {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-edit:hover,
-.btn-delete:hover {
-  opacity: 0.8;
-}
-
-.btn-primary {
-  background: #667eea;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
-  cursor: pointer;
   font-size: 1rem;
 }
 
-.btn-primary:hover {
-  background: #5568d3;
+th {
+  background: #f8fafc;
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-.error-message {
-  background: #fee;
-  color: #c33;
-  padding: 0.75rem;
-  border-radius: 5px;
-  margin-bottom: 1rem;
+td {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  font-weight: 500;
 }
 
-.loading {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
+tr:hover td {
+  background: #f8fafc;
 }
 
-/* Modal Styles */
+/* Data Specific Colors */
+td:nth-child(2) {
+  /* Name */
+  font-weight: 600;
+  color: #1e293b;
+}
+
+td:nth-child(3) {
+  /* Price */
+  color: #6366f1;
+  font-weight: 700;
+}
+
+.low-stock {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.out-of-stock {
+  color: #ef4444;
+  font-weight: 800;
+}
+
+/* Action Buttons */
+.btn-edit {
+  background: #f59e0b;
+  color: #000;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 0.75rem;
+  transition: all 0.2s;
+}
+
+.btn-edit:hover {
+  background: #d97706;
+  transform: scale(1.05);
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* Modal Styling */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 10000;
 }
 
 .modal {
   background: white;
-  padding: 2rem;
-  border-radius: 10px;
+  padding: 2.5rem;
+  border-radius: 24px;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 .modal h2 {
   margin-top: 0;
-  color: #333;
+  margin-bottom: 2rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1e293b;
+  text-align: center;
 }
 
-.modal .form-group {
-  margin-bottom: 1rem;
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
-.modal .form-group label {
+.form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #555;
-  font-weight: 500;
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.95rem;
 }
 
-.modal .form-group input {
+.form-group input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 0.9rem 1.25rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s;
   box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #6366f1;
 }
 
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
 }
 
 .btn-cancel {
-  background: #6c757d;
-  color: white;
+  flex: 1;
+  padding: 0.9rem;
+  background: #f1f5f9;
+  color: #64748b;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
+  border-radius: 12px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .btn-cancel:hover {
-  background: #5a6268;
+  background: #e2e8f0;
+}
+
+.modal-actions .btn-primary {
+  flex: 2;
+  padding: 0.9rem;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-actions .btn-primary:hover {
+  background: #4f46e5;
+}
+
+/* Scrollbar Helper */
+.products-table::-webkit-scrollbar {
+  width: 6px;
+}
+
+.products-table::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
 }
