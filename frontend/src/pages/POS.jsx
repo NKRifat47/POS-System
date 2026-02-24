@@ -26,6 +26,10 @@ function POS({ user }) {
     loadTodayStats();
   }, []);
 
+  useEffect(() => {
+    loadProducts();
+  }, [search]);
+
   const loadProducts = async () => {
     try {
       const data = await getProducts(search);
