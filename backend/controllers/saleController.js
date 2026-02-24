@@ -36,6 +36,7 @@ export const createSale = async (req, res) => {
 
       saleItems.push({
         productId: product.id,
+        productName: product.name,
         quantity: item.quantity,
         price: product.price,
       });
@@ -61,6 +62,7 @@ export const createSale = async (req, res) => {
           data: {
             saleId: newSale.id,
             productId: item.productId,
+            productName: item.productName,
             quantity: item.quantity,
             price: item.price,
           },

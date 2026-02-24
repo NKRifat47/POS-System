@@ -8,6 +8,7 @@ import {
 import "./POS.css";
 
 function POS({ user }) {
+  const API_BASE_URL = "http://127.0.0.1:5000";
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("");
@@ -207,9 +208,22 @@ function POS({ user }) {
               className="product-card"
               onClick={() => addToCart(product)}
             >
-              <h3>{product.name}</h3>
-              <p className="price">${product.price.toFixed(2)}</p>
-              <p className="stock">Stock: {product.stock}</p>
+              {product.image ? (
+                <div className="product-image-container">
+                  <img
+                    src={`${API_BASE_URL}${product.image}`}
+                    alt={product.name}
+                    className="pos-product-image"
+                  />
+                </div>
+              ) : (
+                <div className="pos-no-image">No Image</div>
+              )}
+              <div className="product-card-body">
+                <h3>{product.name}</h3>
+                <p className="price">${product.price.toFixed(2)}</p>
+                <p className="stock">Stock: {product.stock}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -289,7 +303,7 @@ function POS({ user }) {
               {lastSale.saleItems.map((item) => (
                 <div key={item.id} className="bill-item">
                   <span>
-                    {item.product.name} x{item.quantity}
+                    {item.productName} x{item.quantity}
                   </span>
                   <span>${(item.price * item.quantity).toFixed(2)}</span>
                 </div>

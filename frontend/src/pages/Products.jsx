@@ -20,6 +20,10 @@ function Products({ user }) {
     stock: "",
     barcode: "",
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const API_BASE_URL = "http://127.0.0.1:5000";
 
   useEffect(() => {
     loadProducts();
@@ -41,14 +45,25 @@ function Products({ user }) {
     setError("");
 
     try {
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("price", formData.price);
+      data.append("stock", formData.stock);
+      data.append("barcode", formData.barcode);
+      if (imageFile) {
+        data.append("image", imageFile);
+      }
+
       if (editingProduct) {
-        await updateProduct(editingProduct.id, formData);
+        await updateProduct(editingProduct.id, data);
       } else {
-        await createProduct(formData);
+        await createProduct(data);
       }
       setShowModal(false);
       setEditingProduct(null);
       setFormData({ name: "", price: "", stock: "", barcode: "" });
+      setImageFile(null);
+      setImagePreview(null);
       loadProducts();
     } catch (err) {
       setError(err.message);
@@ -63,6 +78,8 @@ function Products({ user }) {
       stock: product.stock.toString(),
       barcode: product.barcode || "",
     });
+    setImageFile(null);
+    setImagePreview(product.image ? `${API_BASE_URL}${product.image}` : null);
     setShowModal(true);
   };
 
@@ -81,7 +98,21 @@ function Products({ user }) {
   const openAddModal = () => {
     setEditingProduct(null);
     setFormData({ name: "", price: "", stock: "", barcode: "" });
+    setImageFile(null);
+    setImagePreview(null);
     setShowModal(true);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   if (loading) return <div className="loading">Loading...</div>;
@@ -111,6 +142,7 @@ function Products({ user }) {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Image</th>
               <th>Name</th>
               <th>Price</th>
               <th>Stock</th>
@@ -129,6 +161,17 @@ function Products({ user }) {
               products.map((product) => (
                 <tr key={product.id}>
                   <td>{product.id}</td>
+                  <td>
+                    {product.image ? (
+                      <img
+                        src={`${API_BASE_URL}${product.image}`}
+                        alt={product.name}
+                        className="product-thumbnail"
+                      />
+                    ) : (
+                      <div className="no-image-thumb">No Image</div>
+                    )}
+                  </td>
                   <td>{product.name}</td>
                   <td>${product.price.toFixed(2)}</td>
                   <td
@@ -212,6 +255,19 @@ function Products({ user }) {
                     setFormData({ ...formData, barcode: e.target.value })
                   }
                 />
+              </div>
+              <div className="form-group">
+                <label>Product Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+                {imagePreview && (
+                  <div className="image-preview">
+                    <img src={imagePreview} alt="Preview" />
+                  </div>
+                )}
               </div>
               <div className="modal-actions">
                 <button

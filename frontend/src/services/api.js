@@ -70,22 +70,40 @@ export const getProductByBarcode = async (barcode) => {
   return data;
 };
 
-export const createProduct = async (product) => {
+export const createProduct = async (productData) => {
+  const isFormData = productData instanceof FormData;
+  const headers = {
+    Authorization: `Bearer ${getToken()}`,
+  };
+
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
+
   const response = await fetch(`${API_URL}/products`, {
     method: "POST",
-    headers: authHeaders(),
-    body: JSON.stringify(product),
+    headers,
+    body: isFormData ? productData : JSON.stringify(productData),
   });
   const data = await response.json();
   if (!response.ok) throw new Error(data.error);
   return data;
 };
 
-export const updateProduct = async (id, product) => {
+export const updateProduct = async (id, productData) => {
+  const isFormData = productData instanceof FormData;
+  const headers = {
+    Authorization: `Bearer ${getToken()}`,
+  };
+
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
+
   const response = await fetch(`${API_URL}/products/${id}`, {
     method: "PUT",
-    headers: authHeaders(),
-    body: JSON.stringify(product),
+    headers,
+    body: isFormData ? productData : JSON.stringify(productData),
   });
   const data = await response.json();
   if (!response.ok) throw new Error(data.error);
