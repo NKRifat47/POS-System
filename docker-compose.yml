@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15
+    container_name: pos-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: pos_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: pos-backend
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:admin@db:5432/pos_db?schema=public
+
+  frontend:
+    build: ./frontend
+    container_name: pos-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+volumes:
+  postgres_data:
