@@ -4,8 +4,10 @@ import "./Login.css";
 
 function Login({ onLogin }) {
   const [isRegister, setIsRegister] = useState(false);
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
   const [role, setRole] = useState("STAFF");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,11 +19,11 @@ function Login({ onLogin }) {
 
     try {
       if (isRegister) {
-        await register(username, password, role);
+        await register({ name, email, password, contactNumber, role });
         setIsRegister(false);
         setError("Registration successful! Please login.");
       } else {
-        const data = await login(username, password);
+        const data = await login(email, password);
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         onLogin(data.user);
@@ -42,14 +44,27 @@ function Login({ onLogin }) {
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>
+          {isRegister && (
+            <div className="form-group">
+              <label>Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder="Enter your name"
+              />
+            </div>
+          )}
+
           <div className="form-group">
-            <label>Username</label>
+            <label>Email</label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="Enter username"
+              placeholder="Enter email"
             />
           </div>
 
@@ -65,13 +80,24 @@ function Login({ onLogin }) {
           </div>
 
           {isRegister && (
-            <div className="form-group">
-              <label>Role</label>
-              <select value={role} onChange={(e) => setRole(e.target.value)}>
-                <option value="STAFF">Staff</option>
-                <option value="ADMIN">Admin</option>
-              </select>
-            </div>
+            <>
+              <div className="form-group">
+                <label>Contact Number</label>
+                <input
+                  type="text"
+                  value={contactNumber}
+                  onChange={(e) => setContactNumber(e.target.value)}
+                  placeholder="Enter contact number"
+                />
+              </div>
+              <div className="form-group">
+                <label>Role</label>
+                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                  <option value="STAFF">Staff</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+              </div>
+            </>
           )}
 
           <button type="submit" disabled={loading} className="btn-primary">

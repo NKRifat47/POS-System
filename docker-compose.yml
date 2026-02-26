@@ -24,6 +24,7 @@ services:
       - /app/node_modules
     ports:
       - "5000:5000"
+      - "5555:5555"
     env_file:
       - ./backend/.env
     depends_on:

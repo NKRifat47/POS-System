@@ -11,6 +11,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import StaffDashboard from "./pages/StaffDashboard";
 import Products from "./pages/Products";
 import POS from "./pages/POS";
+import Profile from "./pages/Profile";
 import Layout from "./components/Layout";
 import "./App.css";
 
@@ -34,6 +35,10 @@ function App() {
 
   const handleLogout = () => {
     setUser(null);
+  };
+
+  const handleUpdateUser = (userData) => {
+    setUser(userData);
   };
 
   if (loading) {
@@ -64,6 +69,19 @@ function App() {
                 ) : (
                   <StaffDashboard user={user} />
                 )}
+              </Layout>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            user ? (
+              <Layout user={user} onLogout={handleLogout}>
+                <Profile user={user} onUpdateUser={handleUpdateUser} />
               </Layout>
             ) : (
               <Navigate to="/login" />

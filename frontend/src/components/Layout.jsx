@@ -25,8 +25,21 @@ function Layout({ children, user, onLogout }) {
         </div>
 
         <div className="user-info">
-          <span className="username">{user.username}</span>
-          <span className="role">{user.role}</span>
+          {user.profilePicture ? (
+            <img
+              src={`http://127.0.0.1:5000/${user.profilePicture}`}
+              alt="Avatar"
+              className="user-avatar-mini"
+            />
+          ) : (
+            <div className="user-avatar-placeholder">
+              {user.name?.charAt(0) || user.email?.charAt(0)}
+            </div>
+          )}
+          <div className="user-details">
+            <span className="username">{user.name || "User"}</span>
+            <span className="role">{user.role}</span>
+          </div>
         </div>
 
         <ul className="nav-links">
@@ -36,6 +49,15 @@ function Layout({ children, user, onLogout }) {
               onClick={() => handleNavigation("dashboard")}
             >
               Dashboard
+            </button>
+          </li>
+
+          <li>
+            <button
+              className={currentPage === "profile" ? "active" : ""}
+              onClick={() => handleNavigation("profile")}
+            >
+              My Profile
             </button>
           </li>
 

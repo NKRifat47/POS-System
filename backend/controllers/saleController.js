@@ -92,7 +92,7 @@ export const createSale = async (req, res) => {
           },
         },
         staff: {
-          select: { id: true, username: true },
+          select: { id: true, name: true, email: true },
         },
       },
     });
@@ -133,7 +133,7 @@ export const getSales = async (req, res) => {
       where,
       include: {
         staff: {
-          select: { id: true, username: true },
+          select: { id: true, name: true, email: true },
         },
         saleItems: {
           include: {
@@ -159,7 +159,7 @@ export const getSaleById = async (req, res) => {
       where: { id: parseInt(id) },
       include: {
         staff: {
-          select: { id: true, username: true },
+          select: { id: true, name: true, email: true },
         },
         saleItems: {
           include: {
@@ -196,7 +196,7 @@ export const getTodaysSales = async (req, res) => {
       },
       include: {
         staff: {
-          select: { id: true, username: true },
+          select: { id: true, name: true, email: true },
         },
         saleItems: {
           include: {

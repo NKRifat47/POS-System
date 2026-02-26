@@ -10,22 +10,22 @@ const authHeaders = () => ({
 });
 
 // ================= AUTH =================
-export const login = async (username, password) => {
+export const login = async (email, password) => {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   });
   const data = await response.json();
   if (!response.ok) throw new Error(data.error);
   return data;
 };
 
-export const register = async (username, password, role) => {
+export const register = async (userData) => {
   const response = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password, role }),
+    body: JSON.stringify(userData),
   });
   const data = await response.json();
   if (!response.ok) throw new Error(data.error);
@@ -35,6 +35,37 @@ export const register = async (username, password, role) => {
 export const getProfile = async () => {
   const response = await fetch(`${API_URL}/auth/profile`, {
     headers: authHeaders(),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error);
+  return data;
+};
+
+export const updateProfile = async (profileData) => {
+  const isFormData = profileData instanceof FormData;
+  const headers = {
+    Authorization: `Bearer ${getToken()}`,
+  };
+
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const response = await fetch(`${API_URL}/auth/profile`, {
+    method: "PUT",
+    headers,
+    body: isFormData ? profileData : JSON.stringify(profileData),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error);
+  return data;
+};
+
+export const changePassword = async (passwordData) => {
+  const response = await fetch(`${API_URL}/auth/profile/password`, {
+    method: "PUT",
+    headers: authHeaders(),
+    body: JSON.stringify(passwordData),
   });
   const data = await response.json();
   if (!response.ok) throw new Error(data.error);
