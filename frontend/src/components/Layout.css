@@ -1,0 +1,154 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background: #252d3d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  padding: 0.5rem 0 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.logo h2 {
+  margin: 0;
+  text-align: left;
+  color: #fff;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.user-info {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.username {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.role {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.nav-links li {
+  margin-bottom: 0.75rem;
+}
+
+.nav-links button {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.nav-links button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.nav-links button.active {
+  background: #7c3aed;
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  margin-top: auto;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.main-content {
+  flex: 1;
+  background: #f8fafc;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0.5rem;
+  }
+
+  .logo {
+    border: none;
+    margin: 0;
+    padding: 0.5rem;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .nav-links li {
+    margin: 0;
+  }
+
+  .nav-links button {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .logout-btn {
+    width: auto;
+    padding: 0.5rem 1rem;
+  }
+}
